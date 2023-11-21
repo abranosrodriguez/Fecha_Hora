@@ -27,26 +27,24 @@ public class MainActivity extends AppCompatActivity {
         btnRecuperarDatos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int version_API = Build.VERSION.SDK_INT;
-                if (version_API<23){
+
                     mensajeConDatos = "Fecha: " + datePicker.getDayOfMonth() + "/" + datePicker.getMonth() + "/" + datePicker.getYear() +
-                            "Hora: " + timePicker.getCurrentHour() + "Minuto: " + timePicker.getCurrentMinute();
+                            "\nHora: " + timePicker.getCurrentHour() + "Minuto: " + timePicker.getCurrentMinute();
                     Toast.makeText(MainActivity.this, mensajeConDatos, Toast.LENGTH_SHORT).show();
 
+                    int hora = timePicker.getCurrentHour();
+                    int minuto = timePicker.getCurrentMinute();
+                    mensaje = "Alarma configurada por aplicacion externa puesta para las: " + hora +":"+minuto;
                     Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
                     intent.putExtra(AlarmClock.EXTRA_MESSAGE, mensaje);
-                    intent.putExtra(AlarmClock.EXTRA_HOUR, timePicker.getCurrentHour());
-                    intent.putExtra(AlarmClock.EXTRA_MINUTES, timePicker.getCurrentMinute());
-                    if (intent.resolveActivity(getPackageManager()) != null){
+                    intent.putExtra(AlarmClock.EXTRA_HOUR, hora);
+                    intent.putExtra(AlarmClock.EXTRA_MINUTES, minuto);
+                    if (intent.resolveActivity(getPackageManager()) == null){
                         startActivity(intent);
                     }else{
                         Toast.makeText(MainActivity.this, "ERROR - NO SE HA CARGADO LA ALARMA", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                mensajeConDatos = "Fecha: " + datePicker.getDayOfMonth() + "/" + datePicker.getMonth() + "/" + datePicker.getYear()+
-                        "Hora: " + timePicker.getHour() + "Minuto: " + timePicker.getMinute();;
-                Toast.makeText(MainActivity.this, mensajeConDatos, Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
     }
